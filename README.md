@@ -67,7 +67,7 @@ http://localhost:5000
 | Package | Version | Purpose |
 |---|---|---|
 | Flask | ≥ 3.0.0 | Web framework |
-| scikit-learn | ≥ 1.4.0 | Random Forest model |
+| scikit-learn | ≥ 1.4.0 | Logistic regression model |
 | joblib | ≥ 1.3.0 | Model serialization |
 | numpy | ≥ 1.26.0 | Numerical operations |
 | pandas | ≥ 2.0.0 | Feature DataFrame construction |
