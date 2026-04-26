@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CareerAI — Job Recommender</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+
+<div class="wrapper">
+
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-dot"></span>
+      <span>Career<strong>AI</strong></span>
+    </div>
+    <p class="tagline">ML-powered job role prediction</p>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>What role<br/><em>fits you best?</em></h1>
+      <p class="hero-sub">Select your skills and experience. Our model will predict your ideal tech career path.</p>
+    </div>
+
+    <form action="/predict" method="POST" id="skillForm">
+
+      <!-- LANGUAGES -->
+      <section class="card">
+        <div class="card-label"><span class="pill">01</span> Programming Languages</div>
+        <div class="chip-grid">
+          {% set langs = [
+            ('python','Python','🐍'),('java','Java','☕'),('dart','Dart','🎯'),
+            ('c','C','⚡'),('javascript','JavaScript','✨'),('html','HTML','🌐'),
+            ('css','CSS','🎨'),('php','PHP','🐘')
+          ] %}
+          {% for name, label, icon in langs %}
+          <label class="chip">
+            <input type="checkbox" name="{{ name }}" value="1"/>
+            <span class="chip-inner">
+              <span class="chip-icon">{{ icon }}</span>
+              <span class="chip-text">{{ label }}</span>
+              <span class="chip-check">✓</span>
+            </span>
+          </label>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- FRAMEWORKS -->
+      <section class="card">
+        <div class="card-label"><span class="pill">02</span> Frameworks & Libraries</div>
+        <div class="chip-grid">
+          {% set frameworks = [
+            ('django','Django','🦄'),('flask','Flask','🧪'),('spring','Spring','🌿'),
+            ('react','React','⚛️'),('angular','Angular','🔺'),('nodejs','Node.js','🟢'),
+            ('flutter','Flutter','🦋'),('laravel','Laravel','🔴')
+          ] %}
+          {% for name, label, icon in frameworks %}
+          <label class="chip">
+            <input type="checkbox" name="{{ name }}" value="1"/>
+            <span class="chip-inner">
+              <span class="chip-icon">{{ icon }}</span>
+              <span class="chip-text">{{ label }}</span>
+              <span class="chip-check">✓</span>
+            </span>
+          </label>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section class="card exp-card">
+        <div class="card-label"><span class="pill">03</span> Experience Level</div>
+        <div class="exp-grid">
+          {% for val, label, desc, icon in [
+            (0,'Junior','0–1 years','🌱'),
+            (1,'Mid-Level','2–3 years','🌿'),
+            (2,'Senior','4–6 years','🌳'),
+            (3,'Expert','7+ years','🏆')
+          ] %}
+          <label class="exp-option">
+            <input type="radio" name="experience_level" value="{{ val }}" {% if val == 0 %}checked{% endif %}/>
+            <span class="exp-inner">
+              <span class="exp-top">
+                <span class="exp-icon">{{ icon }}</span>
+                <span class="exp-label">{{ label }}</span>
+              </span>
+              <span class="exp-desc">{{ desc }}</span>
+            </span>
+          </label>
+          {% endfor %}
+        </div>
+      </section>
+
+      <div class="submit-wrap">
+        <button type="submit" class="btn-predict" id="submitBtn">
+          <span class="btn-text">Predict My Career Path</span>
+          <span class="btn-arrow">→</span>
+          <span class="btn-loading" style="display:none">Analyzing…</span>
+        </button>
+        <p class="hint">Powered by Random Forest · 93% accuracy</p>
+      </div>
+
+    </form>
+  </main>
+
+</div>
+
+<script>
+document.getElementById('skillForm').addEventListener('submit', function() {
+  const btn = document.getElementById('submitBtn');
+  btn.querySelector('.btn-text').style.display = 'none';
+  btn.querySelector('.btn-arrow').style.display = 'none';
+  btn.querySelector('.btn-loading').style.display = 'inline';
+  btn.disabled = true;
+});
+</script>
+
+</body>
+</html>
