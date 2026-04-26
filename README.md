@@ -38,39 +38,21 @@ job_recommender/
 cd job_recommender
 ```
 
-**2. (Optional) Create a virtual environment**
-```bash
-python -m venv venv
-source venv/bin/activate        # macOS/Linux
-venv\Scripts\activate           # Windows
-```
 
-**3. Install dependencies**
+**2. Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-**4. Run the app**
+**3. Run the app**
 ```bash
 python app.py
 ```
 
-**5. Open your browser**
+**4. Open your browser**
 ```
 http://localhost:5000
 ```
-
----
-
-## Dependencies
-
-| Package | Version | Purpose |
-|---|---|---|
-| Flask | ≥ 3.0.0 | Web framework |
-| scikit-learn | ≥ 1.4.0 | Logistic regression model |
-| joblib | ≥ 1.3.0 | Model serialization |
-| numpy | ≥ 1.26.0 | Numerical operations |
-| pandas | ≥ 2.0.0 | Feature DataFrame construction |
 
 ---
 
@@ -115,41 +97,6 @@ Form checkboxes → pandas DataFrame → model.predict() + model.predict_proba()
 
 The training dataset was generated with realistic skill patterns per role (e.g. Dart + Flutter → Mobile Developer, HTML + CSS + React → Frontend Developer) rather than random binary assignment, which gives the model strong class separation.
 
-### Retraining the Model
-
-If you want to retrain on new data:
-
-```python
-import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-import joblib
-
-df = pd.read_csv('your_dataset.csv')
-
-FEATURES = [
-    'python', 'java', 'dart', 'c', 'javascript', 'html', 'css', 'php',
-    'django', 'flask', 'spring', 'react', 'angular', 'nodejs', 'flutter',
-    'laravel', 'experience_level'
-]
-
-X = df[FEATURES]
-y = df['job_role']
-
-model = RandomForestClassifier(n_estimators=200, random_state=42)
-model.fit(X, y)
-
-joblib.dump(model, 'model.pkl')
-```
-
----
-
-## Routes
-
-| Method | Route | Description |
-|---|---|---|
-| `GET` | `/` | Renders the skill selection form |
-| `POST` | `/predict` | Accepts form data, returns result page |
-
 ---
 
 ## UI Features
@@ -162,19 +109,5 @@ joblib.dump(model, 'model.pkl')
 - Fully responsive layout (mobile-friendly)
 
 ---
-
-## Extending the App
-
-**Add a REST API endpoint** — return JSON instead of HTML for use with a frontend framework:
-
-```python
-@app.route('/api/predict', methods=['POST'])
-def api_predict():
-    data = request.get_json()
-    X = pd.DataFrame([data])[FEATURES]
-    pred = int(model.predict(X)[0])
-    proba = model.predict_proba(X)[0].tolist()
-    return {'role': JOB_ROLES[pred], 'probabilities': proba}
-```
 
 **Swap the model** — replace `model.pkl` with any scikit-learn compatible classifier (XGBoost, SVM, etc.) that exposes `predict()` and `predict_proba()`. No other code changes needed.
